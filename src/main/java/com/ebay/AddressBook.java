@@ -73,29 +73,41 @@ public class AddressBook {
      */
     public static class Builder {
 
+        private final String defaultFile = "AddressBook.txt";
+
         private int males = 0;
 
         private AddressBookEntry oldest;
 
+        private String file = defaultFile;
+
         private Map<String, AddressBookEntry> entries = new HashMap<String, AddressBookEntry>();
+
+        public Builder withFile(String file) {
+            this.file = file;
+            return this;
+        }
 
         public AddressBook build() {
             BufferedReader reader = null;
             try {
-                InputStream in = ClassLoader.getSystemResourceAsStream("AddressBook.txt");
+                InputStream in = ClassLoader.getSystemResourceAsStream(file);
                 reader = new BufferedReader(new InputStreamReader(in));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     AddressBookEntry entry = AddressBookEntry.fromLine(line);
 
-                    if (entry.getGender() == Male)
-                        males++;
+                    if (entries.get(entry.getName()) == null) {
+                        if (entry.getGender() == Male)
+                            males++;
+                    }
+
+                    entries.put(entry.getName(), entry);
 
                     if (oldest == null || entry.getDateOfBirth().isBefore(oldest.getDateOfBirth())) {
                         oldest = entry;
                     }
 
-                    entries.put(entry.getName(), entry);
 
                 }
             } catch (Exception e) {

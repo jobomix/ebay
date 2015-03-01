@@ -51,4 +51,10 @@ public class AddressBookTest {
         assertEquals(2862, addressBook.getDifferenceInDays("Bill McKnight", "Paul Robinson"));
     }
 
+    @Test
+    public void shouldNotCountDuplicates() {
+       AddressBook addressBook = new AddressBook.Builder().withFile("duplicates.txt").build();
+       assertEquals(3, addressBook.getMales());
+    }
+
 }
