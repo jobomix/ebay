@@ -10,13 +10,19 @@ import static com.ebay.AddressBookEntry.Gender.Male;
 public class AddressBook {
 
     private final int males;
+    private final AddressBookEntry oldest;
 
     private AddressBook(Builder builder) {
         this.males = builder.males;
+        this.oldest = builder.oldest;
     }
 
     public int getMales() {
         return males;
+    }
+
+    public AddressBookEntry getOldest() {
+        return oldest;
     }
 
 
@@ -28,6 +34,8 @@ public class AddressBook {
 
         private int males = 0;
 
+        private AddressBookEntry oldest;
+
         public AddressBook build() {
             BufferedReader reader = null;
             try {
@@ -38,6 +46,9 @@ public class AddressBook {
                     AddressBookEntry entry = AddressBookEntry.fromLine(line);
                     if (entry.getGender() == Male)
                         males++;
+                    if (oldest == null || entry.getDateOfBirth().isBefore(oldest.getDateOfBirth())) {
+                        oldest = entry;
+                    }
                 }
             } catch (Exception e) {
                 throw new RuntimeException("Problem occurred while reading input file: ", e);

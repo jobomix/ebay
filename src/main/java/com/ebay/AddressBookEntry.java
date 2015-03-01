@@ -64,4 +64,26 @@ public class AddressBookEntry {
     public DateTime getDateOfBirth() {
         return dateOfBirth;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AddressBookEntry entry = (AddressBookEntry) o;
+
+        if (!dateOfBirth.equals(entry.dateOfBirth)) return false;
+        if (gender != entry.gender) return false;
+        if (!name.equals(entry.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + gender.hashCode();
+        result = 31 * result + dateOfBirth.hashCode();
+        return result;
+    }
 }
