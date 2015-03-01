@@ -1,5 +1,8 @@
 package com.ebay;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.io.*;
 
 import static com.ebay.AddressBookEntry.Gender.Male;
@@ -10,6 +13,7 @@ import static com.ebay.AddressBookEntry.Gender.Male;
 public class AddressBook {
 
     private final int males;
+
     private final AddressBookEntry oldest;
 
     private AddressBook(Builder builder) {
@@ -23,6 +27,18 @@ public class AddressBook {
 
     public AddressBookEntry getOldest() {
         return oldest;
+    }
+
+    /**
+     * Compute the difference in days between 2 DateTime.
+     * A positive number means dateTime1 is older than dateTime2
+     * A negative number means dateTime1 is younger than dateTime2
+     * @param dateTime1
+     * @param dateTime2
+     * @return a positive or negative int representing the difference in days for to entries.
+     */
+     static int getDifferenceInDays(DateTime dateTime1, DateTime dateTime2) {
+        return Days.daysBetween(dateTime1, dateTime2).getDays();
     }
 
 
@@ -44,8 +60,10 @@ public class AddressBook {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     AddressBookEntry entry = AddressBookEntry.fromLine(line);
+
                     if (entry.getGender() == Male)
                         males++;
+
                     if (oldest == null || entry.getDateOfBirth().isBefore(oldest.getDateOfBirth())) {
                         oldest = entry;
                     }
