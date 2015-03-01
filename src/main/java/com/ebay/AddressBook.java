@@ -2,6 +2,8 @@ package com.ebay;
 
 import java.io.*;
 
+import static com.ebay.AddressBookEntry.Gender.Male;
+
 /**
  * Represents and address book
  */
@@ -33,8 +35,8 @@ public class AddressBook {
                 reader = new BufferedReader(new InputStreamReader(in));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String entry[] = line.split(",");
-                    if (entry[1].equals(" Male"))
+                    AddressBookEntry entry = AddressBookEntry.fromLine(line);
+                    if (entry.getGender() == Male)
                         males++;
                 }
             } catch (Exception e) {
